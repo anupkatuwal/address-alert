@@ -1,0 +1,30 @@
+services:
+  # Backend — FastAPI web service
+  - type: web
+    name: address-alert-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: GMAIL_ADDRESS
+        sync: false
+      - key: GMAIL_APP_PASSWORD
+        sync: false
+      - key: ALERT_RECIPIENT
+        sync: false
+      - key: FRONTEND_ORIGIN
+        value: https://address-alert-frontend.onrender.com
+
+  # Frontend — React static site
+  - type: web
+    name: address-alert-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    plan: free
+    envVars:
+      - key: VITE_API_BASE
+        value: https://address-alert-api.onrender.com
