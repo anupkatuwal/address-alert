@@ -5,7 +5,7 @@ from email.message import EmailMessage
 from config import settings
 
 SMTP_HOST = "smtp.gmail.com"
-SMTP_PORT = 587
+SMTP_PORT = 465
 
 
 def send_alert(address: str, matched: str, coordinates: dict | None, recipients: list[str]) -> None:
@@ -27,7 +27,6 @@ def send_alert(address: str, matched: str, coordinates: dict | None, recipients:
     msg.set_content("\n".join(lines))
 
     context = ssl.create_default_context()
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-        server.starttls(context=context)
+    with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=context) as server:
         server.login(settings.gmail_address, settings.gmail_app_password)
         server.send_message(msg)
