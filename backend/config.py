@@ -8,15 +8,12 @@ class Settings(BaseSettings):
     gmail_address: str = ""
     gmail_app_password: str = ""
 
-    # Where to send the alert
-    alert_recipient: str = ""
-
     # Frontend origin allowed for CORS
     frontend_origin: str = "http://localhost:5173"
 
     @property
     def email_configured(self) -> bool:
-        return bool(self.gmail_address and self.gmail_app_password and self.alert_recipient)
+        return bool(self.gmail_address and self.gmail_app_password)
 
 
 settings = Settings()
